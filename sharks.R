@@ -26,7 +26,7 @@ library(DT)
 # ==============================================================================
 
 # Loads the Shark Dataset for analysis
-shark <- read.csv("data/shark_data.csv", header = TRUE, stringsAsFactors = FALSE)
+shark <- read.csv("data/shark_data.csv")
 
 # Displays the contents of the "shark" DataFrame
 View(shark)
@@ -559,7 +559,8 @@ fig_6 <- percentage_success_rate_per_industry %>%
   geom_hline(yintercept = average, linetype = "solid", color ="red")+
   annotate("text", x=15, y=average +2, label=paste0("Average: ",average,"%"))+
   labs(title = "APPROVAL RATE BY INDUSTRY", x = "Industry", 
-       y = "Approved_Pitches")+
+       y = "Approved_Pitches (%)")+
+  scale_y_continuous(labels = function(x) paste0(x, "%"))+
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
@@ -818,7 +819,8 @@ fig_8 <- avg_equity_per_industry %>%
   annotate("text", x = 15, y = total_average_equity$Avg + 2, 
            label = paste0("Average Equity: ", total_average_equity$Avg, "%")) +
   labs(title = "AVERAGE EQUITY SURRENDERED PER INDUSTRY", x = "INDUSTRY", 
-       y = "PERCENT EQUITY") +
+       y = "PERCENT EQUITY (%)") +
+  scale_y_continuous(labels = function(x) paste0(x, "%"))+
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
@@ -826,7 +828,6 @@ fig_8 <- avg_equity_per_industry %>%
 # across industries. Although the Automotive and Travel industries stood out in 
 # earlier analyses as advantageous for participants, deals in these sectors tend 
 # to require entrepreneurs to surrender higher equity stakes.
-
 fig_8
 
 # ==============================================================================
@@ -1276,12 +1277,14 @@ fig_14 <- avg_equity_per_shark %>%
   ggplot(aes(x= reorder(Shark, -Avg_Equity), y=Avg_Equity))+
   geom_col(fill="green") +
   geom_text(aes(label = Avg_Equity), vjust = 1, hjust = 0.5)+
-  labs(title = "AVERAGE EQUITY PER SHARK", x= "Shark", y="Average Equity")+
+  labs(title = "AVERAGE EQUITY PER SHARK", x= "Shark", y="Average Equity (%)")+
   geom_hline(yintercept = Total_Avg_Equity$Average_Equity, linetype ="solid", 
              color ="red")+
+  scale_y_continuous(labels = function(x) paste0(x, "%"))+
   annotate("text", x =6, y= Total_Avg_Equity$Average_Equity +1,
            label = paste0("Average Equity: ", Total_Avg_Equity$Average_Equity, "%"))+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
 
 # Displays the column chart showing the average equity obtained by each shark
 fig_14
@@ -1382,4 +1385,5 @@ total_loan_deals<- shark %>%
 
 # Displays the total count of deals approved with a loan condition 
 View(total_loan_deals)
+
 
